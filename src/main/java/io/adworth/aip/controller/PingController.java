@@ -8,9 +8,8 @@ import java.util.Map;
 
 @RestController
 public class PingController {
-	
 	@RequestMapping("/health")
 	public Map<String, String> status(){
-		return Collections.singletonMap("Status", "OK");
+		return Collections.singletonMap("status", "OK");
 	}
 }
