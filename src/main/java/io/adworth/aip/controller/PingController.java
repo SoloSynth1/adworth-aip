@@ -10,7 +10,7 @@ import org.springframework.http.HttpStatus;
 @RestController
 public class PingController {
 	@RequestMapping("/health")
-	public  ResponseEntity<?> status(){
+	public ResponseEntity<?> status(){
 		return ResponseMessage.response("Server OK", HttpStatus.OK);
 	}
 }
