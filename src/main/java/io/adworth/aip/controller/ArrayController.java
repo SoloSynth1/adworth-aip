@@ -1,6 +1,7 @@
 package io.adworth.aip.controller;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -44,12 +45,15 @@ public class ArrayController {
 	}
 	
 	@PostMapping()
-	public synchronized ResponseEntity<?> postArray(){
-		return null;
+	public synchronized ResponseEntity<?> sortArray(){
+		Collections.sort(intList);
+		return ResponseMessage.response("POST successful, " + intList, HttpStatus.OK);
 	}
 	
 	@GetMapping()
 	public ResponseEntity<?> getArray(){
-		return null;
+		ArrayList<Integer> intList_copy = new ArrayList<Integer>(intList);
+		Collections.sort(intList_copy);
+		return ResponseMessage.response(Collections.singletonMap("array", intList_copy), HttpStatus.OK);
 	}
 }
