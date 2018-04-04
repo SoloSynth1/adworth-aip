@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.adworth.aip.helper.ResponseMessage;
+import io.adworth.aip.helper.Sort;
 
 @RestController
 @RequestMapping("/array")
@@ -22,7 +23,8 @@ public class ArrayController {
 	
 	private static ArrayList<Integer> intList = new ArrayList<Integer>();
 	
-	@PutMapping(value = "/put")
+//	@PutMapping(value = "/put")
+	@PutMapping()
 	public ResponseEntity<?> putArray(@RequestBody String json_str){
 		try {
 			JSONObject obj = new JSONObject(json_str);
@@ -46,14 +48,12 @@ public class ArrayController {
 	
 	@PostMapping()
 	public synchronized ResponseEntity<?> sortArray(){
-		Collections.sort(intList);
+		Sort.mergeSort(intList);
 		return ResponseMessage.response("POST successful, " + intList, HttpStatus.OK);
 	}
 	
 	@GetMapping()
 	public ResponseEntity<?> getArray(){
-		ArrayList<Integer> intList_copy = new ArrayList<Integer>(intList);
-		Collections.sort(intList_copy);
-		return ResponseMessage.response(Collections.singletonMap("array", intList_copy), HttpStatus.OK);
+		return ResponseMessage.response(Collections.singletonMap("array", intList), HttpStatus.OK);
 	}
 }
