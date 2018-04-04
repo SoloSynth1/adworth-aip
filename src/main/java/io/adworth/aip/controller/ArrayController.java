@@ -3,10 +3,9 @@ package io.adworth.aip.controller;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -14,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.adworth.aip.helper.Parser;
 import io.adworth.aip.helper.ResponseMessage;
 import io.adworth.aip.helper.Sort;
 
@@ -23,25 +23,14 @@ public class ArrayController {
 	
 	private static ArrayList<Integer> intList = new ArrayList<Integer>();
 	
-//	@PutMapping(value = "/put")
 	@PutMapping()
 	public ResponseEntity<?> putArray(@RequestBody String json_str){
-		try {
-			JSONObject obj = new JSONObject(json_str);
-			JSONArray arr = obj.getJSONArray("array");
-			ArrayList<Integer> rectified_arr = new ArrayList<Integer>();
-			for ( int i = 0; i < arr.length(); i++) {
-				if (arr.get(i) instanceof Integer){
-					rectified_arr.add(arr.getInt(i));
-				} else{
-					rectified_arr.add(Integer.parseInt(arr.getString(i)));
-				}
-			}
-			synchronized (intList){
-				intList.addAll(rectified_arr);
-			}
-		} catch (Exception e){
-			return ResponseMessage.response("One or more element(s) cannot be parsed into integers.", HttpStatus.BAD_REQUEST);
+		ArrayList<Integer> arr = Parser.json2array(json_str);
+		if (arr == null) {
+			return Parser.parseError();
+		}
+		synchronized (intList){
+			intList.addAll(arr);
 		}
 		return ResponseMessage.response("PUT successful, " + intList, HttpStatus.OK);
 	}
@@ -56,4 +45,22 @@ public class ArrayController {
 	public ResponseEntity<?> getArray(){
 		return ResponseMessage.response(Collections.singletonMap("array", intList), HttpStatus.OK);
 	}
+	
+//	@DeleteMapping()
+//	public ResponseEntity<?> deleteByElement(@RequestBody String json_str){
+//		ArrayList<Integer> arr = Parse.json2array(json_str);
+//		if (arr == null) {
+//			return Parse.parseError();
+//		}
+//		return ResponseMessage.response("DELETE successful, " + intList, HttpStatus.OK);
+//	}
+//	
+//	@DeleteMapping()
+//	public ResponseEntity<?> deleteByIndex(@RequestBody String json_str){
+//		ArrayList<Integer> arr = Parse.json2array(json_str);
+//		if (arr == null) {
+//			return Parse.parseError();
+//		}
+//		return ResponseMessage.response("DELETE successful, " + intList, HttpStatus.OK);
+//	}
 }
