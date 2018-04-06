@@ -25,7 +25,7 @@ public class ArrayController {
 	
 	@PutMapping()
 	public ResponseEntity<?> putArray(@RequestBody String json_str){
-		ArrayList<Integer> arr = Parser.json2array(json_str);
+		ArrayList<Integer> arr = Parser.json2IntArray(json_str, "array");
 		if (arr == null) {
 			return Parser.parseError();
 		}
@@ -48,7 +48,7 @@ public class ArrayController {
 	
 //	@DeleteMapping()
 //	public ResponseEntity<?> deleteByElement(@RequestBody String json_str){
-//		ArrayList<Integer> arr = Parse.json2array(json_str);
+//		ArrayList<Integer> arr = Parser.json2IntArray(json_str, "array");
 //		if (arr == null) {
 //			return Parse.parseError();
 //		}
@@ -57,7 +57,7 @@ public class ArrayController {
 //	
 //	@DeleteMapping()
 //	public ResponseEntity<?> deleteByIndex(@RequestBody String json_str){
-//		ArrayList<Integer> arr = Parse.json2array(json_str);
+//		ArrayList<Integer> arr = Parser.json2IntArray(json_str, "array");
 //		if (arr == null) {
 //			return Parse.parseError();
 //		}
