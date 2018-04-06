@@ -50,6 +50,19 @@ public class Parser {
 		}
 	}
 	
+	public static Integer json2Int(String json_str, String col) {
+		try {
+			JSONObject obj = new JSONObject(json_str);
+			Object content = obj.get(col);
+			if (content instanceof Integer) {
+				return (Integer) content;
+			} else {
+				return Integer.parseInt((String) content);
+			}
+		} catch (Exception e) {
+			return (Integer) null;
+		}
+	}
 	public static ResponseEntity<?> parseError() {
 		return ResponseMessage.response("One or more element(s) cannot be parsed into integers.", HttpStatus.BAD_REQUEST);
 	}

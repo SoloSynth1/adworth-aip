@@ -46,21 +46,27 @@ public class ArrayController {
 		return ResponseMessage.response(Collections.singletonMap("array", intList), HttpStatus.OK);
 	}
 	
-//	@DeleteMapping()
-//	public ResponseEntity<?> deleteByElement(@RequestBody String json_str){
-//		ArrayList<Integer> arr = Parser.json2IntArray(json_str, "array");
-//		if (arr == null) {
-//			return Parse.parseError();
-//		}
-//		return ResponseMessage.response("DELETE successful, " + intList, HttpStatus.OK);
-//	}
-//	
-//	@DeleteMapping()
-//	public ResponseEntity<?> deleteByIndex(@RequestBody String json_str){
-//		ArrayList<Integer> arr = Parser.json2IntArray(json_str, "array");
-//		if (arr == null) {
-//			return Parse.parseError();
-//		}
-//		return ResponseMessage.response("DELETE successful, " + intList, HttpStatus.OK);
-//	}
+	@PostMapping("/max")
+	public ResponseEntity<?> getMax(@RequestBody String json_str){
+		ArrayList<Integer> arr = Parser.json2IntArray(json_str, "array");
+		Sort.mergeSort(arr);
+		return ResponseMessage.response("POST successful, " + arr.get(arr.size()-1), HttpStatus.OK);
+	}
+	
+	@PostMapping("/min")
+	public ResponseEntity<?> getMin(@RequestBody String json_str){
+		ArrayList<Integer> arr = Parser.json2IntArray(json_str, "array");
+		Sort.mergeSort(arr);
+		return ResponseMessage.response("POST successful, " + arr.get(0), HttpStatus.OK);
+	}
+	
+	@DeleteMapping()
+	public ResponseEntity<?> deleteByElement(@RequestBody String json_str){
+		Integer element = Parser.json2Int(json_str, "element");
+		if (element == null) {
+			return Parser.parseError();
+		}
+		intList.remove(element);
+		return ResponseMessage.response("DELETE successful, " + intList, HttpStatus.OK);
+	}
 }
