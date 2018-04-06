@@ -46,18 +46,11 @@ public class ArrayController {
 		return ResponseMessage.response(Collections.singletonMap("array", intList), HttpStatus.OK);
 	}
 	
-	@PostMapping("/max")
+	@PostMapping("/getmaxmin")
 	public ResponseEntity<?> getMax(@RequestBody String json_str){
 		ArrayList<Integer> arr = Parser.json2IntArray(json_str, "array");
 		Sort.mergeSort(arr);
-		return ResponseMessage.response("POST successful, " + arr.get(arr.size()-1), HttpStatus.OK);
-	}
-	
-	@PostMapping("/min")
-	public ResponseEntity<?> getMin(@RequestBody String json_str){
-		ArrayList<Integer> arr = Parser.json2IntArray(json_str, "array");
-		Sort.mergeSort(arr);
-		return ResponseMessage.response("POST successful, " + arr.get(0), HttpStatus.OK);
+		return ResponseMessage.response("POST successful, MAX: " + arr.get(arr.size()-1) + " , MIN: " + arr.get(0), HttpStatus.OK);
 	}
 	
 	@DeleteMapping()
