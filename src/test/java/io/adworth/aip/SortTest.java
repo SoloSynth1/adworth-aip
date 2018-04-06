@@ -66,6 +66,19 @@ public class SortTest {
 		assertArrayEquals(Array.toArray(), refArray.toArray());
 	}
 	
+	@Test
+	public void shouldSortArrayWithIntArray() {
+		int[] arr = {34, 56, 123, -234, 0, 0, 0, 12, 42, -145, 65536, 124};
+		ArrayList<Integer> Array = new ArrayList<Integer>();
+		for (int i: arr) {
+			Array.add(i);
+		}
+		ArrayList<Integer> refArray = new ArrayList<Integer>(Array);
+		Sort.mergeSort(Array);
+		Collections.sort(refArray);
+		assertArrayEquals(Array.toArray(), refArray.toArray());
+	}
+	
 	public ArrayList<Integer> generateRandList(int size){
 		SecureRandom rand = new SecureRandom();
 		ArrayList<Integer> randArray = new ArrayList<Integer>();
