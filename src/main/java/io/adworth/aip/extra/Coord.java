@@ -32,7 +32,7 @@ public class Coord {
 		}
 	}
 	
-	public boolean getX(int x){
+	public boolean setX(int x){
 		try{
 			this.x = x;
 			return true;
@@ -41,7 +41,7 @@ public class Coord {
 		}
 	}
 	
-	public boolean getY(int y){
+	public boolean setY(int y){
 		try{
 			this.y = y;
 			return true;
