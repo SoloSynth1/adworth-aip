@@ -4,8 +4,8 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import io.adworth.aip.extra.Coord;
-import io.adworth.aip.extra.NQueensProblem;
+import io.adworth.aip.extra.nqueens.Coord;
+import io.adworth.aip.extra.nqueens.NQueensProblem;
 
 public class NQueensTest {
 	NQueensProblem nqp = new NQueensProblem();

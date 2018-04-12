@@ -2,14 +2,13 @@ package io.adworth.aip.security.filter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -18,6 +17,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import io.adworth.aip.helper.ResponseMessage;
 import io.adworth.aip.security.constant.SecretKey;
 import io.adworth.aip.security.entity.User;
 import io.jsonwebtoken.Jwts;
@@ -41,7 +41,8 @@ public class AdworthLoginFilter extends UsernamePasswordAuthenticationFilter {
                             new ArrayList<>())
             );
         } catch (IOException e) {
-            throw new RuntimeException(e);
+        	// treat any bad request at "/login" as no username and password passed
+        	return authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(null, null));
         }
     }
 
@@ -53,9 +54,12 @@ public class AdworthLoginFilter extends UsernamePasswordAuthenticationFilter {
                 .setExpiration(new Date(System.currentTimeMillis() + 120 * 1000)) 
                 .signWith(SignatureAlgorithm.HS512, SecretKey.SIGNING_KEY) 
                 .compact();
-        Map<String, Object> tokenRes = new HashMap<String, Object>();
-        tokenRes.put("access_token", token);
-        res.getWriter().write(new ObjectMapper().writeValueAsString(tokenRes));
+    	ResponseMessage.setSecurityResponse(res, "Login Sucessful", null, token, HttpStatus.OK); 
+    }
+    
+    @Override
+    protected void unsuccessfulAuthentication(HttpServletRequest req, HttpServletResponse res, AuthenticationException e) throws IOException, ServletException {
+    	ResponseMessage.setSecurityResponse(res, "Login Failed", e.getLocalizedMessage(), null, HttpStatus.FORBIDDEN);
     }
 
 }

@@ -14,6 +14,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 import io.adworth.aip.security.constant.SecretKey;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 
 public class AdworthAuthenticationFilter extends BasicAuthenticationFilter {
@@ -29,20 +30,23 @@ public class AdworthAuthenticationFilter extends BasicAuthenticationFilter {
         chain.doFilter(request, response);
     }
 
-    private UsernamePasswordAuthenticationToken getAuthentication(HttpServletRequest request) {
+    private UsernamePasswordAuthenticationToken getAuthentication(HttpServletRequest request) throws ExpiredJwtException {
         String token = request.getParameter("token");
         if (token != null) {
-            // parse the token.
-            String user = Jwts.parser()
-                    .setSigningKey(SecretKey.SIGNING_KEY)
-                    .parseClaimsJws(token)
-                    .getBody()
-                    .getSubject();
-            if (user != null) {
-                return new UsernamePasswordAuthenticationToken(user, null, new ArrayList<>());
-            }
-            return null;
+        	try {
+	            String user = Jwts.parser()
+	                    .setSigningKey(SecretKey.SIGNING_KEY)
+	                    .parseClaimsJws(token)
+	                    .getBody()
+	                    .getSubject();
+	            if (user != null) {
+	                return new UsernamePasswordAuthenticationToken(user, null, new ArrayList<>());
+	            }
+	            return null;
+        	} catch (Exception e) {
+        		return null;
+        	}
         }
-        return null;
+	    return null;
     }
 }

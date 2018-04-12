@@ -1,22 +1,37 @@
 Test Plan of the security implementation in aip
 	
 Test 1: Normal login
-By passing a JSON containing {"username": "root", "password": "toor"} to the path"/login", the API sucessfully returned a JWT containing the correct login name "root" and signing key valid for 120 seconds. 
+The API returned SUCCESS repsonse with JWT containing the correct login name "root" and signing key valid for 120 seconds. 
 	
 Test 2: Login attempt w/ missing username and/or password
-The API gave empty response when "username" and/or "password" is an empty string. (i.e. {"username": "", "password": ""})
+The API returned FORBIDDEN response with a message of "Bad credentials".
 
-Test 3: Login attempt w/ wrong username and/or password
-The API gave empty response with incorrect "username" and "password" pair. (i.e. {"username": "root", "password": "pass"})
+Test 3: Login attempt w/ wrong username and/or password (i.e. {"username": "root", "password": "pass"})
+The API returned FORBIDDEN response with a message of "Bad credentials".
 
-Test 4: Login attempt w/ other data types
-The API gave empty response when "username" or "password" contains non-String values. (i.e. {"username": 0, "password": 134657.34})
+Test 4: Login attempt w/ other data types(i.e. {"username": 0, "password": 134657.34})
+The API returned FORBIDDEN response with a message of "Bad credentials".
  
-Test 5: Login attempt w/ empty JSON String
-The API gave empty response when a user tries to access the API by passing an empty JSON String. (i.e. {})
+Test 5: Login attempt w/ empty JSON String (i.e. {})
+The API returned FORBIDDEN response with a message of "Bad credentials".
+
+Test 6: Login attempt w/ empty Request Body
+The API returned FORBIDDEN response with a message of "Bad credentials".
+
+Test 7: Login attempt by calling GET, PUT or DELETE method at "/login"
+The API returned FORBIDDEN response with a message of "Bad credentials".
  
-Test 6: Token validity
+Test 8: Token validity
 Using the JWT returned by the API as params (i.e. adding "?Token=xxxxx" after the URL), all functionalities in "/array" and "/nqueens" are accessible for 120 seconds. After the token expired the SAPI gave out empty response and no data (e.g. the integer array in memory) was modified after token expiration.
- 
-Test 7: Access attempt using expired Token
-API will give empty response when a user tries to access the API by  passing an expired token.
+
+Test 9: Access non-valid paths with valid token
+The API returned BAD REQUEST response with a message of "Bad Request" and the Token String.
+
+Test 10: Access attempt using expired Token
+The API returned FORBIDDEN response with a message of "Access Denied".
+
+Test 11: Access attempt using invalid Token (e.g. Bad username and/or bad signing key)
+The API returned FORBIDDEN response with a message of "Access Denied".
+
+Test 12: Access attempt without Token
+The API returned FORBIDDEN response with a message of "Access Denied".

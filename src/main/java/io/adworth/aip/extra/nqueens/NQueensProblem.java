@@ -1,4 +1,4 @@
-package io.adworth.aip.extra;
+package io.adworth.aip.extra.nqueens;
 
 import java.util.ArrayList;
 

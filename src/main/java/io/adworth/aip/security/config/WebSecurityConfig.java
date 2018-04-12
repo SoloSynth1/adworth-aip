@@ -7,12 +7,10 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import io.adworth.aip.security.filter.AdworthAuthenticationFilter;
 import io.adworth.aip.security.filter.AdworthLoginFilter;
-import io.adworth.aip.security.config.AdworthAuthenticationProvider;
 import io.adworth.aip.security.entity.UserTable;
 
 @Configuration
@@ -20,11 +18,9 @@ import io.adworth.aip.security.entity.UserTable;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	
-    private UserDetailsService userDetailsService;
 	private BCryptPasswordEncoder passwordEncoder;
 
-    public WebSecurityConfig(UserDetailsService userDetailsService, BCryptPasswordEncoder passwordEncoder) {
-        this.userDetailsService = userDetailsService;
+    public WebSecurityConfig(BCryptPasswordEncoder passwordEncoder) {
         this.passwordEncoder = passwordEncoder;
     }
     
@@ -34,7 +30,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.cors().and().csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeRequests()
-                .anyRequest().authenticated()  // 所有请求需要身份认证
+                .anyRequest().authenticated()
                 .and()
                 .addFilter(getAdworthLoginFilter())
                 .addFilter(new AdworthAuthenticationFilter(authenticationManager()));
@@ -51,9 +47,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     		.password(passwordEncoder.encode(UserTable.getUser(i).getPassword()))
     		.roles(UserTable.getUser(i).getRole());
     	}
-
-    	// 使用自定义身份验证组件
-        auth.authenticationProvider(new AdworthAuthenticationProvider(userDetailsService, passwordEncoder));
     }
     
     public AdworthLoginFilter getAdworthLoginFilter() throws Exception{
@@ -61,5 +54,4 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         filter.setFilterProcessesUrl("/login");
         return filter;
     }
-    
 }
