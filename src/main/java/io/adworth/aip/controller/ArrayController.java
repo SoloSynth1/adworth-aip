@@ -1,6 +1,5 @@
 package io.adworth.aip.controller;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -25,7 +24,7 @@ public class ArrayController {
 	private static ArrayList<Integer> intList = new ArrayList<Integer>();
 	
 	@PutMapping()
-	public ResponseEntity<?> putArray(@RequestBody String json_str) throws IOException {
+	public ResponseEntity<?> putArray(@RequestBody String json_str) {
 		ArrayList<Integer> arr = Parser.json2IntArray(json_str, "array");
 		if (arr == null) {
 			return Parser.parseError();
