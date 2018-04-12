@@ -19,13 +19,13 @@ Test 6: Login attempt w/ empty Request Body
 The API returned FORBIDDEN response with a message of "Bad credentials".
 
 Test 7: Login attempt by calling GET, PUT or DELETE method at "/login"
-The API returned FORBIDDEN response with a message of "Bad credentials".
+The API returned NOT_FOUND response.
  
 Test 8: Token validity
-Using the JWT returned by the API as params (i.e. adding "?Token=xxxxx" after the URL), all functionalities in "/array" and "/nqueens" are accessible for 120 seconds. After the token expired the SAPI gave out empty response and no data (e.g. the integer array in memory) was modified after token expiration.
+Using the JWT returned by the API as params (i.e. adding "?token=xxxxx" after the URL), all functionalities in "/array" and "/nqueens" are accessible for 120 seconds. After the token expired the SAPI gave out empty response and no data (e.g. the integer array in memory) was modified after token expiration.
 
 Test 9: Access non-valid paths with valid token
-The API returned BAD REQUEST response with a message of "Bad Request" and the Token String.
+The API returned NOT_FOUND response.
 
 Test 10: Access attempt using expired Token
 The API returned FORBIDDEN response with a message of "Access Denied".

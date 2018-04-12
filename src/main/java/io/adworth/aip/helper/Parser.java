@@ -60,7 +60,7 @@ public class Parser {
 				return Integer.parseInt((String) content);
 			}
 		} catch (Exception e) {
-			return (Integer) null;
+			return null;
 		}
 	}
 	public static ResponseEntity<?> parseError() {

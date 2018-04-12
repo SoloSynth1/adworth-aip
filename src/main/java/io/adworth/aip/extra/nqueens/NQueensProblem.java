@@ -6,12 +6,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.adworth.aip.helper.Parser;
 import io.adworth.aip.helper.ResponseMessage;
 
-@RestController("/nqueens")
+
+@RestController
+@RequestMapping("/api/nqueens")
 public class NQueensProblem {
 	public static final int X_START = 1;
 	public static final int Y_START = 1;

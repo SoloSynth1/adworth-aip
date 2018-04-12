@@ -8,6 +8,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -33,13 +34,16 @@ public class AdworthLoginFilter extends UsernamePasswordAuthenticationFilter {
     @Override
     public Authentication attemptAuthentication(HttpServletRequest req, HttpServletResponse res) throws AuthenticationException {
     	try {
-            User user = new ObjectMapper().readValue(req.getInputStream(), User.class);
-            return authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(
-                            user.getUsername(),
-                            user.getPassword(),
-                            new ArrayList<>())
-            );
+    		if (req.getMethod().equals(HttpMethod.POST.name())) {
+	            User user = new ObjectMapper().readValue(req.getInputStream(), User.class);
+	            return authenticationManager.authenticate(
+	                    new UsernamePasswordAuthenticationToken(
+	                            user.getUsername(),
+	                            user.getPassword(),
+	                            new ArrayList<>())
+	            );
+    		}
+    		return null;
         } catch (IOException e) {
         	// treat any bad request at "/login" as no username and password passed
         	return authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(null, null));
