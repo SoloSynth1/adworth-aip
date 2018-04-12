@@ -18,13 +18,13 @@ import io.adworth.aip.helper.ResponseMessage;
 import io.adworth.aip.helper.Sort;
 
 @RestController
-@RequestMapping("/array")
+@RequestMapping("/api/array")
 public class ArrayController {
 	
 	private static ArrayList<Integer> intList = new ArrayList<Integer>();
 	
 	@PutMapping()
-	public ResponseEntity<?> putArray(@RequestBody String json_str){
+	public ResponseEntity<?> putArray(@RequestBody String json_str) {
 		ArrayList<Integer> arr = Parser.json2IntArray(json_str, "array");
 		if (arr == null) {
 			return Parser.parseError();
